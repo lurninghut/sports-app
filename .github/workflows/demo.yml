@@ -10,5 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: echo
-        run: echo 'hello workflows'
+      - name: checking out code
+        uses: actions/checkout@v2
+
+      - name: Setting up java env
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: grant permissions
+        run: chmod +x gradlew
+
+      - name: build action
+        run: ./gradlew build
