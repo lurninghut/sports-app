@@ -1,0 +1,14 @@
+name: Demo to setup a project with github actions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: echo
+        run: echo 'hello workflows'
