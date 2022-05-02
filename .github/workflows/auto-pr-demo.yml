@@ -18,13 +18,13 @@ jobs:
       - name: Update author information
         run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
 
-      - name: Raise PR
+      - name: Raise PR 1
         id: demo-1
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: "auto-pr-branch"
+          branch: "auto-pr-branch1"
           base: main
-          title: "demo for auto pr"
+          title: "demo for auto pr1"
           committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
           author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
           body:
@@ -32,18 +32,45 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: true
 
-      - name: Approve Pull Request
+      - name: Raise PR 2
+          id: demo-2
+          uses: peter-evans/create-pull-request@v3
+          with:
+            branch: "auto-pr-branch2"
+            base: main
+            title: "demo for auto pr2"
+            committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+            author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+            body:
+              This is to show automatic PR creation
+            token: ${{ secrets.GITHUB_TOKEN }}
+            delete-branch: true
+
+      - name: Approve Pull Request1
         uses: juliangruber/approve-pull-request-action@v1
         with:
           github-token: ${{ secrets.APPROVER_DEMO }}
           number: ${{ steps.demo-1.outputs.pull-request-number }}
 
-      - name: Merge Pull request
+      - name: Approve Pull Request2
+          uses: juliangruber/approve-pull-request-action@v1
+          with:
+            github-token: ${{ secrets.APPROVER_DEMO }}
+            number: ${{ steps.demo-2.outputs.pull-request-number }}
+
+      - name: Merge Pull request1
         uses: juliangruber/merge-pull-request-action@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.demo-1.outputs.pull-request-number }}
           method: squash
+
+      - name: Merge Pull request2
+          uses: juliangruber/merge-pull-request-action@v1
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            number: ${{ steps.demo-2.outputs.pull-request-number }}
+            method: squash
 
 
 
